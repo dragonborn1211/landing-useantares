@@ -74,10 +74,28 @@ The first screen's cloud, seeing and target altitudes are illustrative, not a li
 - The footer carries a small credit, "Concept by Private Technology House" (also in the
   `author` meta and the source comment). Remove it if the site goes live for a real client.
 
-## Deploy
+## Deploy: GitHub Pages on useantares.com
 
-The site is the repository root as it is: `index.html`, `assets/`, `robots.txt`, `sitemap.xml`.
-Any static host serves it; there is nothing to build.
+The site is the repository root as it is; there is nothing to build. `CNAME` holds the domain,
+`.nojekyll` tells Pages to serve the files untouched.
+
+1. Repository **Settings → Pages → Build and deployment**: Source *Deploy from a branch*,
+   branch `main`, folder `/ (root)`, Save. The custom domain fills in from `CNAME`.
+2. Cloudflare **DNS** for useantares.com, all records *DNS only* (grey cloud):
+
+   | Type | Name | Content |
+   |---|---|---|
+   | A | `@` | 185.199.108.153 |
+   | A | `@` | 185.199.109.153 |
+   | A | `@` | 185.199.110.153 |
+   | A | `@` | 185.199.111.153 |
+   | CNAME | `www` | dragonborn1211.github.io |
+
+   Remove any other A record on `@`.
+3. Back in **Settings → Pages**, wait for the DNS check to pass and the certificate to be issued,
+   then tick **Enforce HTTPS**.
+
+Every push to `main` redeploys the site within a minute or two.
 
 ## Before going live
 
