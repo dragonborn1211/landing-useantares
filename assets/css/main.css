@@ -38,6 +38,17 @@
 /* ── base ───────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 68px; -webkit-text-size-adjust: 100%; }
+/* a scrollbar in the site's steel-on-ice palette */
+html { scrollbar-width: thin; scrollbar-color: var(--accent-soft) transparent; }
+::-webkit-scrollbar { width: 11px; height: 11px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  border-radius: 999px; border: 3px solid var(--bg);
+  background: var(--accent-soft); background-clip: padding-box;
+  transition: background .4s var(--ease);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--accent); background-clip: padding-box; }
+::-webkit-scrollbar-corner { background: transparent; }
 body {
   margin: 0;
   background: var(--bg);
