@@ -580,7 +580,7 @@
       { c: '201, 120, 92', p: 0.05 }    // red giants, like Antares
     ];
     var EXPOSURE = 0.42;     // radians of sky rotation captured in each trail
-    var SPIN = 0.012;        // radians per second while you watch
+    var SPIN = 0.016;        // radians per second while you watch
     var SCROLL = 0.00045;    // radians per pixel scrolled
     var W = 0, H = 0, dpr = 1, pole = { x: 0, y: 0 }, rFar = 1, buckets = [], drawn = { rot: -1, len: -1, at: 0 };
     var built = { w: 0, h: 0 }, eased = null, prevNow = 0;
