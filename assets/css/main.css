@@ -6,6 +6,12 @@
    html.tonight — tonight's sky panel is open.
    ════════════════════════════════════════════════════════════════ */
 
+/* ── fonts: self-hosted, SIL Open Font License (assets/fonts/OFL-*.txt) ── */
+@font-face { font-family: 'Cormorant Garamond'; src: url(../fonts/cormorant-garamond.woff2) format('woff2'); font-weight: 300 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Cormorant Garamond'; src: url(../fonts/cormorant-garamond-italic.woff2) format('woff2'); font-weight: 300 400; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Manrope'; src: url(../fonts/manrope.woff2) format('woff2'); font-weight: 400 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'JetBrains Mono'; src: url(../fonts/jetbrains-mono.woff2) format('woff2'); font-weight: 400 500; font-style: normal; font-display: swap; }
+
 /* ── tokens ─────────────────────────────────────────────────────── */
 :root {
   --bg: #FAF8F4;            /* milk */

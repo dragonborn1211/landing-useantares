@@ -20,6 +20,7 @@ index.html            all sections
 assets/css/main.css   tokens, sections, tonight panel, responsive
 assets/js/main.js     content (OBJ, LAY), Moon maths, menu, booking form, background
 assets/img/           stars.webp (night windows), trails.webp (background without JS), og.jpg (link preview)
+assets/fonts/         Cormorant Garamond, Manrope, JetBrains Mono (WOFF2, Latin subset) + OFL licences
 robots.txt, sitemap.xml
 tools/build_stars.py  regenerates stars.webp and stars-960.webp (Python, numpy, Pillow)
 ```
