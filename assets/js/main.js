@@ -580,10 +580,10 @@
       { c: '201, 120, 92', p: 0.05 }    // red giants, like Antares
     ];
     var EXPOSURE = 0.42;     // radians of sky rotation captured in each trail
-    var SPIN = 0.0075;       // radians per second while you watch
-    var SCROLL = 0.00038;    // radians per pixel scrolled
+    var SPIN = 0.012;        // radians per second while you watch
+    var SCROLL = 0.00045;    // radians per pixel scrolled
     var W = 0, H = 0, dpr = 1, pole = { x: 0, y: 0 }, rFar = 1, buckets = [], drawn = { rot: -1, len: -1, at: 0 };
-    var built = { w: 0, h: 0 }, lastScroll = -1;
+    var built = { w: 0, h: 0 }, eased = null, prevNow = 0;
     var t0 = performance.now(), meteor = null, nextMeteor = t0 + 9000;
 
     function rand(seed) { return function () { seed = seed * 16807 % 2147483647; return (seed - 1) / 2147483646; }; }
@@ -602,7 +602,7 @@
         var pick = r(), k = 0, acc = INK[0].p;
         while (pick > acc && k < INK.length - 1) acc += INK[++k].p;
         var alpha = Math.round((0.07 + mag * 0.27) * 20) / 20;
-        var width = Math.round((0.55 + mag * 1.2) * 4) / 4;
+        var width = Math.round((0.75 + mag * 1.1) * 4) / 4;
         var key = k + '|' + alpha + '|' + width;
         if (!map[key]) { map[key] = { style: 'rgba(' + INK[k].c + ',' + alpha + ')', width: width, arcs: [] }; buckets.push(map[key]); }
         map[key].arcs.push(rad, r() * Math.PI * 2);
@@ -623,13 +623,13 @@
       var t = (now - t0) / 1000;
       var grow = reduceMotion ? 1 : Math.min(1, t / 5.5);
       grow = 1 - Math.pow(1 - grow, 3);
-      var rot = reduceMotion ? 0 : t * SPIN + (window.scrollY || 0) * SCROLL;
+      // The scroll offset follows the page with a soft lag, so wheel steps turn the sky smoothly.
+      var sy = window.scrollY || 0;
+      var dt = prevNow ? Math.min(0.1, (now - prevNow) / 1000) : 0;
+      prevNow = now;
+      eased = eased === null ? sy : eased + (sy - eased) * (1 - Math.exp(-dt * 6));
+      var rot = reduceMotion ? 0 : t * SPIN + eased * SCROLL;
       var len = Math.max(0.004, EXPOSURE * grow);
-      // While scrolling, every frame; otherwise about 12 frames a second is plenty for a slow sky.
-      var sy = window.scrollY || 0, scrolling = sy !== lastScroll;
-      lastScroll = sy;
-      if (!meteor && len === drawn.len && now <= nextMeteor && !scrolling &&
-          (now - drawn.at < 80 || Math.abs(rot - drawn.rot) * rFar < 0.5)) return;
       drawn.rot = rot; drawn.len = len; drawn.at = now;
       cx.setTransform(dpr, 0, 0, dpr, 0, 0);
       cx.fillStyle = BG;
