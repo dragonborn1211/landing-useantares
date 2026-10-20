@@ -8,7 +8,7 @@
   /* ── Contact channels. Fill in before going live. ─────────────── */
   var CONFIG = {
     endpoint: '',                    // URL that accepts POST application/json { night, contact }
-    email: 'hello@useantares.com',   // mailbox on the domain; the form falls back to mailto
+    email: '',                       // e.g. 'hello@useantares.com' once the mailbox exists
     whatsapp: '',                    // number in international format, digits only, e.g. '15551234567'
     instagram: ''                    // handle without @
   };
@@ -478,13 +478,27 @@
     var reqEl = $('[data-req]', form);
     var statusEl = $('[data-status]', form);
     var btn = $('button[type="submit"]', form);
+    var lastSent = 0;
+    var open = !!(CONFIG.endpoint || CONFIG.email || CONFIG.whatsapp);
 
-    function payload() { return { night: form.night.value.trim(), contact: form.contact.value.trim() }; }
+    function payload() {
+      return { night: form.night.value.trim(), contact: form.contact.value.trim(), page: 'https://useantares.com/', lang: 'en', ts: new Date().toISOString() };
+    }
+    function line(label, value, hint) {
+      return '<span class="k">' + label + ' ·</span> ' + (value ? esc(value) : '<span class="ph">' + hint + '</span>');
+    }
     function renderReq() {
       var p = payload();
-      reqEl.innerHTML = '<span class="k">Request ·</span> ' + esc(p.night || '—') + '\n<span class="k">Reply to ·</span> ' + esc(p.contact || '—');
+      reqEl.innerHTML = line('Request', p.night, 'your night, in a phrase') + '\n' + line('Reply to', p.contact, 'email or phone');
     }
     function say(msg) { statusEl.textContent = msg; }
+
+    // Nowhere to send yet: say so, and do not pretend to send.
+    if (!open) {
+      form.classList.add('closed');
+      btn.disabled = true;
+      say('Bookings open soon.');
+    }
 
     form.addEventListener('input', function (e) {
       if (e.target.value.trim()) e.target.removeAttribute('aria-invalid');
@@ -492,17 +506,25 @@
     });
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+      if (!open) return;
       var p = payload();
       var firstBad = null;
       [form.night, form.contact].forEach(function (f) {
         if (!f.value.trim()) { f.setAttribute('aria-invalid', 'true'); firstBad = firstBad || f; }
       });
       if (firstBad) { firstBad.focus(); say('We need both lines: your night and how to reach you.'); return; }
+      // Bots fill the hidden field; people never see it.
+      if (form.website && form.website.value) { form.reset(); renderReq(); return; }
+      var wait = Math.ceil((lastSent + 20000 - Date.now()) / 1000);
+      if (wait > 0) { say('Please wait ' + wait + ' s before sending again.'); return; }
 
       if (CONFIG.endpoint) {
+        lastSent = Date.now();
         btn.disabled = true;
         say('Sending…');
-        fetch(CONFIG.endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(p) })
+        var ctrl = window.AbortController ? new AbortController() : null;
+        var timer = ctrl && setTimeout(function () { ctrl.abort(); }, 10000);
+        fetch(CONFIG.endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(p), signal: ctrl ? ctrl.signal : undefined })
           .then(function (r) {
             if (!r.ok) throw new Error(String(r.status));
             say('Received. We’ll write back within a day.');
@@ -510,15 +532,15 @@
             renderReq();
           })
           .catch(function () { say('That didn’t go through. ' + (CONFIG.email ? 'Write to ' + CONFIG.email + '.' : 'Please try again.')); })
-          .then(function () { btn.disabled = false; });
+          .then(function () { clearTimeout(timer); btn.disabled = false; });
       } else if (CONFIG.email) {
+        lastSent = Date.now();
         location.href = 'mailto:' + CONFIG.email + '?subject=' + encodeURIComponent('Night request — ' + p.night.slice(0, 80)) + '&body=' + encodeURIComponent(p.night + '\n\nReply to: ' + p.contact);
         say('Opening your email… If nothing opens, write to ' + CONFIG.email + '.');
-      } else if (CONFIG.whatsapp) {
+      } else {
+        lastSent = Date.now();
         window.open('https://wa.me/' + CONFIG.whatsapp + '?text=' + encodeURIComponent(p.night + ' — ' + p.contact), '_blank', 'noopener');
         say('Opening WhatsApp…');
-      } else {
-        say('Booking opens soon.');
       }
     });
     renderReq();
@@ -532,10 +554,13 @@
   };
   $$('[data-link]').forEach(function (a) {
     var href = links[a.getAttribute('data-link')];
-    if (!href) { a.hidden = true; return; }
+    if (!href) return;   // a channel that is not set up stays hidden
     a.href = href;
+    a.hidden = false;
     if (/^https?:/.test(href)) { a.target = '_blank'; a.rel = 'noopener'; }
   });
+  var linkRow = $('.footer-links');
+  if (linkRow) linkRow.hidden = !$$('[data-link]:not([hidden])', linkRow).length;
 
   /* ── Background: star trails ──────────────────────────────────────
      A long exposure of the sky above the dome, drawn on canvas: every

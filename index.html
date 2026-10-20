@@ -21,6 +21,12 @@
 <meta property="og:url" content="https://useantares.com/">
 <meta property="og:title" content="Antares — Observatory &amp; Guesthouse">
 <meta property="og:description" content="Dark sky. Big glass. Stay for the stars, at 2,140 m.">
+<meta property="og:image" content="https://useantares.com/assets/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Dark sky. Big glass. Stay for the stars. — Antares, with a night-sky window">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://useantares.com/assets/img/og.jpg">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 26' fill='none' stroke='%234F7184' stroke-width='1.4'%3E%3Cpath d='M13 2 23 13 13 24 3 13Z'/%3E%3Ccircle cx='13' cy='13' r='2.6' fill='%23C9785C' stroke='none'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -85,11 +91,11 @@
 
     <!-- the night ahead: sky conditions and tonight's programme -->
     <div class="hero-stage">
-      <div class="glass screen dash emerge d2" role="img" aria-label="Tonight’s forecast at the observatory: 4% cloud, 0.8 arcsecond seeing, the sky darkest after midnight; targets the Lagoon Nebula, the star Antares, M4 and Alpha Centauri">
+      <div class="glass screen dash emerge d2" role="img" aria-label="A typical clear night at the observatory: 4% cloud, 0.8 arcsecond seeing, the sky darkest after midnight; targets the Lagoon Nebula, the star Antares, M4 and Alpha Centauri">
         <div class="win-bar">
           <i></i><i></i><i></i>
-          <span class="url mono">useantares.com / tonight</span>
-          <span class="live mono"><span class="pulse dot"></span>forecast</span>
+          <span class="url mono">useantares.com / sky</span>
+          <span class="live mono"><span class="pulse dot"></span>a typical clear night</span>
         </div>
         <div class="dash-body">
           <div class="dash-rail"><b></b><i></i><i></i><i></i></div>
@@ -120,7 +126,7 @@
         <div class="sweep"></div>
       </div>
       <div class="glass screen term mono emerge d4" aria-hidden="true">
-        <div class="win-bar"><i></i><i></i><i></i><span>tonight · programme</span></div>
+        <div class="win-bar"><i></i><i></i><i></i><span>evening · programme</span></div>
         <div class="term-body" data-term>
           <div><span class="dim">›</span> <span data-type>sunset 20:41 · sky clearing</span></div>
           <div class="row">  dinner   <span class="st" data-step>✓</span>   briefing <span class="st" data-step>✓</span></div>
@@ -217,7 +223,7 @@
         <!-- 01 · the telescope: tonight through the eyepiece -->
         <div class="pv pv-shop on" data-preview="0">
           <div class="pv-nav"><b class="serif">Antares</b><i></i><i></i><i></i><em></em></div>
-          <div class="pv-banner"><span class="t serif">Tonight through the Antares</span><i></i><span class="cta mono">Book the dome</span></div>
+          <div class="pv-banner"><span class="t serif">Through the Antares</span><i></i><span class="cta mono">Book the dome</span></div>
           <div class="pv-grid">
             <div><span class="ev ev-saturn"></span><em class="mono">Saturn · 369×</em></div>
             <div><span class="ev ev-cluster"></span><em class="mono">M4 · 155×</em></div>
@@ -408,9 +414,10 @@ night light red only, after dusk</code></pre>
       <input id="bk-when" name="night" class="field" type="text" placeholder="Two of us, a clear night in March" autocomplete="off" required>
       <label for="bk-who" class="mono">Email or phone</label>
       <input id="bk-who" name="contact" class="field" type="text" placeholder="you@example.com" autocomplete="email" required>
-      <pre class="req mono" aria-hidden="true" data-req>Request · —
-Reply to · —</pre>
+      <pre class="req mono" aria-hidden="true" data-req><span class="k">Request ·</span> <span class="ph">your night, in a phrase</span>
+<span class="k">Reply to ·</span> <span class="ph">email or phone</span></pre>
       <p class="enter-note">Free cancellation up to 14 days before arrival.</p>
+      <p class="hp" aria-hidden="true"><label for="bk-site">Website</label><input id="bk-site" name="website" type="text" tabindex="-1" autocomplete="off"></p>
       <button type="submit" class="enter-btn">Send request <span>→</span></button>
       <p class="enter-status mono" role="status" data-status></p>
     </form>
@@ -432,10 +439,10 @@ Reply to · —</pre>
       <a href="#rules">House rules</a>
       <a href="#book">Book</a>
     </nav>
-    <span class="footer-links">
-      <a href="#book" data-link="instagram">Instagram</a>
-      <a href="#book" data-link="whatsapp">WhatsApp</a>
-      <a href="#book" data-link="email">Email</a>
+    <span class="footer-links" hidden>
+      <a data-link="instagram" hidden>Instagram</a>
+      <a data-link="whatsapp" hidden>WhatsApp</a>
+      <a data-link="email" hidden>Email</a>
     </span>
     <span class="footer-build mono">© 2026 Antares Observatory · useantares.com · 2,140 m · Moon tonight <span data-moon-foot>—</span> · <button type="button" class="linkish" data-tonight-toggle aria-pressed="false">T — tonight</button></span>
     <span class="footer-concept mono">Concept by Private Technology House</span>
